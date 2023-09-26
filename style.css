@@ -1,0 +1,144 @@
+@import url('https://fonts.googleapis.com/css2?family=Italiana&family=Jura:wght@300;400;500;600;700&family=Kranky&display=swap');
+
+:root {
+    --primary: rgba(29, 27, 162, 0.8);
+    --font-title: 'Italiana', serif;
+    --font-text: 'Jura', sans-serif;
+}
+
+body {
+    perspective: 10000px;
+    background-image: url("paper_background.png");
+    margin: 0;
+}
+
+:where(h1, h2) {
+    font-family: var(--font-title);
+    color: var(--primary);
+}
+
+* {
+    box-sizing: border-box;
+    transform-style: preserve-3d;
+}
+
+img {
+    width: 100%;
+}
+
+a:any-link {
+    main & {
+        color: white
+    }
+
+    header & {
+        color: var(--primary);
+    }
+}
+
+header {
+    padding-block: 3rem;
+    text-align: center;
+}
+#threed:checked {
+    &~main {
+        rotate: y 70deg;
+    }
+
+    &+label {
+        background-color: var(--primary);
+        color: white;
+        border-color: white;
+    }
+}
+
+label {
+    position: sticky;
+    z-index: 1;
+    inset: 1rem;
+    padding: 0.5rem;
+    background-color: transparent;
+    width: fit-content;
+    height: fit-content;
+    border-radius: 0.5rem;
+    color: var(--primary);
+    border: 1px solid var(--primary);
+    cursor: pointer;
+
+    &:hover {
+        background-color: color-mix(in srgb, var(--primary) 20%, transparent);
+    }
+}
+
+main {
+    display: grid;
+    place-items: center;
+    margin: auto;
+    margin-block-end: 3rem;
+    transition: 1s;
+}
+
+.polygon {
+    display: grid;
+    place-items: center;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    --radius: 150px;
+    --width: 360px;
+    --faces: 3;
+    --alpha: calc(360deg / var(--faces));
+    --H: calc(var(--radius) * cos(var(--alpha) / 2));
+    --L: calc(2 * var(--radius) * sin(var(--alpha) / 2));
+    animation: rotation linear 10s infinite;
+    animation-play-state: paused;
+    width: var(--width);
+    transform-origin: center center var(--H);
+
+
+    & div {
+        margin-block: calc(var(--radius) /2 + 2rem);
+        display: grid;
+        place-items: center;
+        grid-column: 1;
+        grid-row: 1;
+        --position: 1;
+        width: 100%;
+        height: var(--L);
+        translate: z var(--H);
+        color: white;
+        font-size: 2rem;
+        text-align: center;
+
+        rotate: x calc(var(--alpha) * var(--position, 1));
+        transform: scaleZ(-1);
+        background-color: color-mix(in srgb, var(--primary) calc(100% - var(--position) * 10%), black);
+        transform-origin: center center var(--H);
+        object-fit: cover;
+        overflow: hidden;
+    }
+
+    &:hover {
+        animation-play-state: running;
+    }
+}
+
+.polygon3 {
+    --radius: 100px;
+    --width: 50px;
+
+    & div {
+        background: linear-gradient(90deg, rgb(189, 145, 0), rgb(255, 196, 0), rgb(189, 145, 0));
+    }
+
+    &:hover div {
+        transition: 0.5s;
+        background: url('ring.png'), linear-gradient(90deg, rgb(189, 145, 0), rgb(255, 196, 0), rgb(189, 145, 0));
+        background-size: contain;
+    }
+}
+
+@keyframes rotation {
+    to {
+        rotate: x -360deg;
+    }
+}
